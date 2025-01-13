@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public struct MatchPoint
 {
@@ -31,6 +32,22 @@ public struct MatchPoint
 
 public static class SupportCardHelper
 {
+    [RuntimeInitializeOnLoadMethod]
+    private static void LoadAllSupportCard()
+    {
+        Type abstractType = typeof(SupportCard); // Thay BaseClass bằng abstract class bạn cần tìm
+        var derivedTypes = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(assembly => assembly.GetTypes())
+            .Where(type => type.IsSubclassOf(abstractType) && !type.IsAbstract)
+            .ToList();
+
+        Debug.Log("Các script kế thừa từ " + abstractType.Name + ":");
+        foreach (var foundType in derivedTypes)
+        {
+            var instance = Activator.CreateInstance(foundType);
+            _supportCardLoaded.Add(foundType.Name, instance as SupportCard);
+        }
+    }
     // return {+,x}
     public static MatchPoint GetAdditionValue(string[] cards, string[] supportCards)
     {
