@@ -1,3 +1,7 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
 public struct MatchPoint
 {
     public int Plus;
@@ -30,7 +34,7 @@ public static class SupportCardHelper
     // return {+,x}
     public static MatchPoint GetAdditionValue(string[] cards, string[] supportCards)
     {
-        MatchPoint result = MatchPoint.Create(0,0);
+        MatchPoint result = MatchPoint.Create(0, 0);
         MatchPoint cache = MatchPoint.Create(0, 0);
         foreach (var support in supportCards)
         {
@@ -42,13 +46,20 @@ public static class SupportCardHelper
 
     public static MatchPoint GetSupportValue(string supportCard, string[] cards)
     {
-        ISupportCard supportScript = null;
-        switch (supportCard)
+
+        if (!_supportCardLoaded.ContainsKey(supportCard))
         {
-            default:
-                break;
+            Type foundType = AppDomain.CurrentDomain.GetAssemblies()
+           .SelectMany(assembly => assembly.GetTypes())
+           .FirstOrDefault(type => type.Name == supportCard);
+            if (foundType == null)
+                throw new ArgumentNullException(supportCard);
+            var instance = Activator.CreateInstance(foundType);
+            _supportCardLoaded.Add(supportCard, instance as SupportCard);
         }
-        return supportScript.GetSupportValue(cards);
+        return _supportCardLoaded[supportCard].GetSupportValue(cards);
     }
+
+    static Dictionary<string, SupportCard> _supportCardLoaded = new();
 }
 
