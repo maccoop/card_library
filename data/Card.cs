@@ -1,16 +1,19 @@
 ﻿using UnityEngine;
 using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 [Serializable]
 public class Card: ICard
 {
-    public const string H = "Hearts";
-    public const string D = "Diamonds";
-    public const string C = "Clubs";
-    public const string S = "Spades";
+    public const string H = "H";
+    public const string D = "D";
+    public const string C = "C";
+    public const string S = "S";
 
     /// <summary>
-    /// key có dạng 'giá trị, loại'
+    /// key có dạng '[giá trị][loại]'
+    /// ex: 4c, 3c, 5d
     /// giá trị: 2->14
     /// loại:   Hearts - H
     ///         Diamonds – D
@@ -28,8 +31,10 @@ public class Card: ICard
 
     private void Init()
     {
-        Value = int.Parse(key.Split(',')[0]);
-        Type = GetCardType(int.Parse(key.Split(',')[1]));
+        Value = int.Parse(Regex.Match(key, @"^\d+").Value);
+        if (Value > 14)
+            Value = 14;
+        Type = Regex.Match(key, @"\D").Value.ToUpper();
     }
     public MatchPoint GetAddition()
     {

@@ -1,3 +1,8 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
+
 public struct MatchPoint
 {
     public int Plus;
@@ -27,9 +32,26 @@ public struct MatchPoint
 
 public static class SupportCardHelper
 {
-    public static MatchPoint GetAdditionValue(ICard[] cards, ISupportCard[] supportCards)
+    [RuntimeInitializeOnLoadMethod]
+    private static void LoadAllSupportCard()
     {
-        MatchPoint result = MatchPoint.Create(0,0);
+        Type abstractType = typeof(SupportCard); // Thay BaseClass bằng abstract class bạn cần tìm
+        var derivedTypes = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(assembly => assembly.GetTypes())
+            .Where(type => type.IsSubclassOf(abstractType) && !type.IsAbstract)
+            .ToList();
+
+        Debug.Log("Các script kế thừa từ " + abstractType.Name + ":");
+        foreach (var foundType in derivedTypes)
+        {
+            var instance = Activator.CreateInstance(foundType);
+            _supportCardLoaded.Add(foundType.Name, instance as SupportCard);
+        }
+    }
+    // return {+,x}
+    public static MatchPoint GetAdditionValue(Card[] cards, SupportCard[] supportCards)
+    {
+        MatchPoint result = MatchPoint.Create(0, 0);
         MatchPoint cache = MatchPoint.Create(0, 0);
         foreach (var support in supportCards)
         {
@@ -39,20 +61,50 @@ public static class SupportCardHelper
         return result;
     }
 
-    public static MatchPoint GetSupportValue(ISupportCard supportCard, ICard[] cards)
+    public static MatchPoint GetSupportValue(SupportCard supportCard, Card[] cards)
     {
-        return supportCard.GetSupportValue(cards);
+
+        if (!_supportCardLoaded.ContainsKey(supportCard.Name))
+        {
+            Type foundType = AppDomain.CurrentDomain.GetAssemblies()
+           .SelectMany(assembly => assembly.GetTypes())
+           .FirstOrDefault(type => type.Name == supportCard.Name);
+            if (foundType == null)
+                throw new ArgumentNullException(supportCard.Name);
+            var instance = Activator.CreateInstance(foundType);
+            _supportCardLoaded.Add(supportCard.Name, instance as SupportCard);
+        }
+        return _supportCardLoaded[supportCard.Name].GetSupportValue(cards);
     }
 
-    public static ISupportCard GetSupportCard(string supportCard)
+    public static SupportCard GetSupportCard(string supportCard)
     {
-        ISupportCard supportScript = null;
-        switch (supportCard)
+
+        if (!_supportCardLoaded.ContainsKey(supportCard))
         {
-            default:
-                break;
+            Type foundType = AppDomain.CurrentDomain.GetAssemblies()
+           .SelectMany(assembly => assembly.GetTypes())
+           .FirstOrDefault(type => type.Name == supportCard);
+            if (foundType == null)
+                throw new ArgumentNullException(supportCard);
+            var instance = Activator.CreateInstance(foundType);
+            _supportCardLoaded.Add(supportCard, instance as SupportCard);
         }
-        return supportScript;
+        return _supportCardLoaded[supportCard];
     }
+
+    public static SupportCard[] GetSupportCards(this string[] supportCards)
+    {
+        SupportCard[] result = new SupportCard[supportCards.Length];
+        int i = 0;
+        foreach (var card in supportCards)
+        {
+            result[i++] = GetSupportCard(card);
+        }
+        return result;
+    }
+
+    public static Dictionary<string, SupportCard> _supportCardLoaded = new();
+
 }
 

@@ -12,4 +12,25 @@ public static class CardHelper
         point += SupportCardHelper.GetAdditionValue(cards, supports);
         return point.GetValue();
     }
+
+    public static int GetCardValue(string[] cards, SupportCard[] supports)
+    {
+        return GetCardValue(cards.GetCards(), supports);
+    }
+
+    public static int GetCardValue(string[] cards, string[] supports)
+    {
+        return GetCardValue(cards, supports.GetSupportCards());
+    }
+
+    public static Card[] GetCards(this string[] cards)
+    {
+        Card[] result = new Card[cards.Length];
+        int i = 0;
+        foreach (var card in cards)
+        {
+            result[i++] = Card.GetCard(card);
+        }
+        return result;
+    }
 }
