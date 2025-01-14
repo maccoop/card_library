@@ -13,13 +13,11 @@ public class Add10Chan : SupportCard
     }
     public override int Price => _price;
 
-    public override MatchPoint GetSupportValue(string[] cards)
+    public override MatchPoint GetSupportValue(Card[] cards)
     {
         MatchPoint result = new MatchPoint();
-        Card card;
-        foreach (var e in cards)
+        foreach (var card in cards)
         {
-            card = Card.GetCard(e);
             if ((card.Value % 2 == 0) == type)
                 result.Plus += VALUE;
         }

@@ -49,7 +49,7 @@ public static class SupportCardHelper
         }
     }
     // return {+,x}
-    public static MatchPoint GetAdditionValue(string[] cards, string[] supportCards)
+    public static MatchPoint GetAdditionValue(Card[] cards, SupportCard[] supportCards)
     {
         MatchPoint result = MatchPoint.Create(0, 0);
         MatchPoint cache = MatchPoint.Create(0, 0);
@@ -61,21 +61,22 @@ public static class SupportCardHelper
         return result;
     }
 
-    public static MatchPoint GetSupportValue(string supportCard, string[] cards)
+    public static MatchPoint GetSupportValue(SupportCard supportCard, Card[] cards)
     {
 
-        if (!_supportCardLoaded.ContainsKey(supportCard))
+        if (!_supportCardLoaded.ContainsKey(supportCard.Name))
         {
             Type foundType = AppDomain.CurrentDomain.GetAssemblies()
            .SelectMany(assembly => assembly.GetTypes())
-           .FirstOrDefault(type => type.Name == supportCard);
+           .FirstOrDefault(type => type.Name == supportCard.Name);
             if (foundType == null)
-                throw new ArgumentNullException(supportCard);
+                throw new ArgumentNullException(supportCard.Name);
             var instance = Activator.CreateInstance(foundType);
-            _supportCardLoaded.Add(supportCard, instance as SupportCard);
+            _supportCardLoaded.Add(supportCard.Name, instance as SupportCard);
         }
-        return _supportCardLoaded[supportCard].GetSupportValue(cards);
+        return _supportCardLoaded[supportCard.Name].GetSupportValue(cards);
     }
+
     public static SupportCard GetSupportCard(string supportCard)
     {
 
@@ -92,6 +93,18 @@ public static class SupportCardHelper
         return _supportCardLoaded[supportCard];
     }
 
+    public static SupportCard[] GetSupportCards(this string[] supportCards)
+    {
+        SupportCard[] result = new SupportCard[supportCards.Length];
+        int i = 0;
+        foreach (var card in supportCards)
+        {
+            result[i++] = GetSupportCard(card);
+        }
+        return result;
+    }
+
     public static Dictionary<string, SupportCard> _supportCardLoaded = new();
+
 }
 

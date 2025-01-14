@@ -6,7 +6,7 @@ public interface ISupportCard
     int Price { get; }
     Sprite Texture { get; }
     string Description { get; }
-    MatchPoint GetSupportValue(string[] cards);
+    MatchPoint GetSupportValue(Card[] cards);
 }
 
 public abstract class SupportCard: ISupportCard
@@ -34,7 +34,10 @@ public abstract class SupportCard: ISupportCard
             return _description;
         }
     }
-    public abstract MatchPoint GetSupportValue(string[] cards);
+
+    public string Name => GetType().Name;
+
+    public abstract MatchPoint GetSupportValue(Card[] cards);
     private Sprite _texture;
     private string _description;
 }
