@@ -1,34 +1,33 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public class Add10Chan : SupportCard
+public class Multi3Chan : SupportCard
 {
-    [SerializeField] private Sprite _texture;
     [SerializeField] private int _price;
-    const int VALUE = 10;
+    [SerializeField] private Sprite _texture;
+    const int VALUE = 3;
     protected bool type;
-    public Add10Chan()
+    public Multi3Chan()
     {
         type = true;
     }
-    public override int Price => _price;
 
-    public override MatchPoint GetSupportValue(Card[] cards)
+    public override MatchPoint GetSupportValue(ICard[] cards)
     {
         MatchPoint result = new MatchPoint();
         foreach (var card in cards)
         {
             if ((card.Value % 2 == 0) == type)
-                result.Plus += VALUE;
+                result.Multi += VALUE;
         }
         return result;
     }
 }
 
 [System.Serializable]
-public class Add10Le: Add10Chan
+public class Multi3Le : Multi3Chan
 {
-    public Add10Le()
+    public Multi3Le()
     {
         type = false;
     }

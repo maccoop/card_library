@@ -49,7 +49,7 @@ public static class SupportCardHelper
         }
     }
     // return {+,x}
-    public static MatchPoint GetAdditionValue(Card[] cards, SupportCard[] supportCards)
+    public static MatchPoint GetAdditionValue(ICard[] cards, ISupportCard[] supportCards)
     {
         MatchPoint result = MatchPoint.Create(0, 0);
         MatchPoint cache = MatchPoint.Create(0, 0);
@@ -61,7 +61,7 @@ public static class SupportCardHelper
         return result;
     }
 
-    public static MatchPoint GetSupportValue(SupportCard supportCard, Card[] cards)
+    public static MatchPoint GetSupportValue(ISupportCard supportCard, ICard[] cards)
     {
 
         if (!_supportCardLoaded.ContainsKey(supportCard.Name))

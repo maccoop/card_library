@@ -11,9 +11,7 @@ public class Multi4H : SupportCard
         cardtype = Card.H;
     }
 
-    public override int Price => _price;
-
-    public override MatchPoint GetSupportValue(Card[] cards)
+    public override MatchPoint GetSupportValue(ICard[] cards)
     {
         MatchPoint result = new MatchPoint();
         foreach (var card in cards)

@@ -1,53 +1,51 @@
 ﻿using UnityEngine;
 
 [System.Serializable]
-public class Multi2H : SupportCard
+public class Add5H : SupportCard
 {
     [SerializeField] private Sprite _texture;
     [SerializeField] private int _price;
-    const int VALUE = 2;
+    const int VALUE = 5;
     protected string cardtype;
-    public Multi2H()
+    public Add5H()
     {
         cardtype = Card.H;
     }
 
-    public override int Price => _price;
-
-    public override MatchPoint GetSupportValue(Card[] cards)
+    public override MatchPoint GetSupportValue(ICard[] cards)
     {
         MatchPoint result = new MatchPoint();
         foreach (var card in cards)
         {
             if (card.Type == cardtype)
-                result.Multi += VALUE;
+                result.Plus += VALUE;
         }
         return result;
     }
 }
 
 [System.Serializable]
-public class Multi2S : Multi2H
+public class Add5S : Add5H
 {
-    public Multi2S()
+   public Add5S()
     {
         cardtype = Card.S;
     }
 }
 
 [System.Serializable]
-public class Multi2C : Multi2H
+public class Add5C : Add5H
 {
-    public Multi2C()
+   public Add5C()
     {
         cardtype = Card.C;
     }
 }
 
 [System.Serializable]
-public class Multi2D : Multi2H
+public class Add5D : Add5H
 {
-    public Multi2D()
+   public Add5D()
     {
         cardtype = Card.D;
     }
