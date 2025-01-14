@@ -11,7 +11,6 @@ public class Multi3Chan : SupportCard
     {
         type = true;
     }
-    public override string Description => $"Thêm {VALUE} điểm cộng với mỗi bài {(type ? "Chẵn" : "Lẻ")} đánh ra";
     public override int Price => _price;
 
     public override MatchPoint GetSupportValue(string[] cards)

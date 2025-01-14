@@ -11,7 +11,6 @@ public class Multi2H : SupportCard
     {
         cardtype = Card.H;
     }
-    public override string Description => $"Thêm {VALUE} điểm nhân với mỗi bài {cardtype} đánh ra";
 
     public override int Price => _price;
 

@@ -1,3 +1,4 @@
+using Assets.SimpleLocalization.Scripts;
 using UnityEngine;
 
 public interface ISupportCard
@@ -22,7 +23,18 @@ public abstract class SupportCard: ISupportCard
             return _texture;
         }
     }
-    public abstract string Description { get; }
+    public string Description
+    {
+        get
+        {
+            if(_description == null)
+            {
+                _description = LocalizationManager.Localize(GetType().Name);
+            }
+            return _description;
+        }
+    }
     public abstract MatchPoint GetSupportValue(string[] cards);
     private Sprite _texture;
+    private string _description;
 }

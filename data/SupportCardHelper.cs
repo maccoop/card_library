@@ -76,7 +76,22 @@ public static class SupportCardHelper
         }
         return _supportCardLoaded[supportCard].GetSupportValue(cards);
     }
+    public static SupportCard GetSupportCard(string supportCard)
+    {
 
-    static Dictionary<string, SupportCard> _supportCardLoaded = new();
+        if (!_supportCardLoaded.ContainsKey(supportCard))
+        {
+            Type foundType = AppDomain.CurrentDomain.GetAssemblies()
+           .SelectMany(assembly => assembly.GetTypes())
+           .FirstOrDefault(type => type.Name == supportCard);
+            if (foundType == null)
+                throw new ArgumentNullException(supportCard);
+            var instance = Activator.CreateInstance(foundType);
+            _supportCardLoaded.Add(supportCard, instance as SupportCard);
+        }
+        return _supportCardLoaded[supportCard];
+    }
+
+    public static Dictionary<string, SupportCard> _supportCardLoaded = new();
 }
 

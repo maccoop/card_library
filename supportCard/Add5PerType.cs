@@ -11,7 +11,6 @@ public class Add5H : SupportCard
     {
         cardtype = Card.H;
     }
-    public override string Description => $"Thêm 5 điểm cộng với mỗi bài {cardtype} đánh ra";
 
     public override int Price => _price;
 
