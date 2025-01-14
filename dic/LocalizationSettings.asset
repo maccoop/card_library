@@ -16,5 +16,8 @@ MonoBehaviour:
   Sheets:
   - Name: Description Support
     Id: 0
-    TextAsset: {fileID: 4900000, guid: 1dc945781cc0fc04889c898ec7a35108, type: 3}
+    TextAsset: {fileID: 4900000, guid: 5429fe3d55ff7994c991aa0c271bfb2f, type: 3}
+  - Name: Price
+    Id: 119066591
+    TextAsset: {fileID: 4900000, guid: 4734f9aa47e7e8f40901b50f1077aaeb, type: 3}
   SaveFolder: {fileID: 102900000, guid: c392831e85f928548b8494fefd912562, type: 3}
