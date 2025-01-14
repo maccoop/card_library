@@ -27,8 +27,7 @@ public struct MatchPoint
 
 public static class SupportCardHelper
 {
-    // return {+,x}
-    public static MatchPoint GetAdditionValue(string[] cards, string[] supportCards)
+    public static MatchPoint GetAdditionValue(ICard[] cards, ISupportCard[] supportCards)
     {
         MatchPoint result = MatchPoint.Create(0,0);
         MatchPoint cache = MatchPoint.Create(0, 0);
@@ -40,7 +39,12 @@ public static class SupportCardHelper
         return result;
     }
 
-    public static MatchPoint GetSupportValue(string supportCard, string[] cards)
+    public static MatchPoint GetSupportValue(ISupportCard supportCard, ICard[] cards)
+    {
+        return supportCard.GetSupportValue(cards);
+    }
+
+    public static ISupportCard GetSupportCard(string supportCard)
     {
         ISupportCard supportScript = null;
         switch (supportCard)
@@ -48,7 +52,7 @@ public static class SupportCardHelper
             default:
                 break;
         }
-        return supportScript.GetSupportValue(cards);
+        return supportScript;
     }
 }
 

@@ -2,19 +2,12 @@
 using System;
 
 [Serializable]
-public class Card
+public class Card: ICard
 {
     public const string H = "Hearts";
     public const string D = "Diamonds";
     public const string C = "Clubs";
     public const string S = "Spades";
-
-    internal MatchPoint GetAddition()
-    {
-        if (Value > 10)
-            return MatchPoint.Create(10,0);
-        return MatchPoint.Create(Value, 0);
-    }
 
     /// <summary>
     /// key có dạng 'giá trị, loại'
@@ -38,6 +31,12 @@ public class Card
         Value = int.Parse(key.Split(',')[0]);
         Type = GetCardType(int.Parse(key.Split(',')[1]));
     }
+    public MatchPoint GetAddition()
+    {
+        if (Value > 10)
+            return MatchPoint.Create(10, 0);
+        return MatchPoint.Create(Value, 0);
+    }
 
     public static string GetCardType(int value)
     {
@@ -47,7 +46,14 @@ public class Card
         if (value is 3) return nameof(S);
         return null;
     }
-
+    public static string GetCardName(int value)
+    {
+        if (value is 0) return H;
+        if (value is 1) return D;
+        if (value is 2) return C;
+        if (value is 3) return S;
+        return null;
+    }
     public static Card GetCard(string card)
     {
         var result = new Card() { key = card };

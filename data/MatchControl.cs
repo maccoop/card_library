@@ -14,13 +14,16 @@ public class MatchControl : UnityEngine.MonoBehaviour
     private WaitForSeconds _waitPlayerSelected = new WaitForSeconds(MatchSetting.SecondWaitPlayerSelected);
     private WaitForFixedUpdate _waitUpdate = new WaitForFixedUpdate();
     private SelectedCardData phaseData;
+    private MatchPhase lastPhase;
 
     public IMatchPlayer Player1 { get; private set; }
     public IMatchPlayer Player2 { get; private set; }
     public MatchPhase _MatchPhase { get; private set; }
-    public SelectedCardData SupportCards { get; private set; }
-    public SelectedCardData UseSupportCard { get; private set; }
+    public SelectedSPCardData SupportCards { get; private set; }
+    public SelectedSPCardData UseSupportCard { get; private set; }
     public bool player1First { get; private set; }
+    public int Phase { get; private set; }
+    public MatchPoint _MatchPoint { get; private set; }
     public bool Join(IMatchPlayer player)
     {
         if (_MatchPhase != MatchPhase.WaitingPlayer)
@@ -34,22 +37,21 @@ public class MatchControl : UnityEngine.MonoBehaviour
         {
             Player2 = player;
             _MatchPhase = MatchPhase.KhoiTao;
-            StartCoroutine(CoInit());
             return true;
         }
     }
 
-    public IEnumerator CoInit()
+    public IEnumerator Khoitao()
     {
         if (_MatchPhase != MatchPhase.KhoiTao)
             yield break;
         /// tạo bài
         /// 
-        Player1.Init();
-        Player2.Init();
+        Player1.KhoiTao();
+        Player2.KhoiTao();
         // tráo bài
-        Player1.Suffle();
-        Player2.Suffle();
+        Player1.XaoBai();
+        Player2.XaoBai();
         // next
         _MatchPhase = MatchPhase.ChiaBai;
     }
@@ -57,16 +59,16 @@ public class MatchControl : UnityEngine.MonoBehaviour
     public IEnumerator ChiaBai()
     {
         yield return _waitSwitchPhase;
-        Player1.DealCard();
-        Player2.DealCard();
+        Player1.ChiaBai();
+        Player2.ChiaBai();
         _MatchPhase = MatchPhase.ChonBaiBoTro;
     }
 
     public IEnumerator ChonBaiBoTro()
     {
         yield return _waitSwitchPhase;
-        Player1.SelectSupportCard();
-        Player2.SelectSupportCard();
+        Player1.ChonBaiHoTro();
+        Player2.ChonBaiHoTro();
         bool player1Done = false;
         bool player2Done = false;
         Player1.OnSupportCardSelected += (cards) =>
@@ -77,7 +79,7 @@ public class MatchControl : UnityEngine.MonoBehaviour
         Player2.OnSupportCardSelected += (cards) =>
         {
             SupportCards.Player2 = cards;
-            player1Done = true;
+            player2Done = true;
         };
         while (!PlayerSelectCardDone())
         {
@@ -97,16 +99,16 @@ public class MatchControl : UnityEngine.MonoBehaviour
         SelectedCardData phaseData = new();
         bool player1Done = false;
         bool player2Done = false;
-        Player1.SelectCard(1);
-        Player2.SelectCard(1);
+        Player1.ChonBai(1);
+        Player2.ChonBai(1);
         Player1.OnCardSelected += (cards) =>
         {
-            phaseData.Player1 = new string[] { cards[0] };
+            phaseData.Player1 = new ICard[] { cards[0] };
             player1Done = true;
         };
         Player2.OnCardSelected += (cards) =>
         {
-            phaseData.Player2 = new string[] { cards[0] };
+            phaseData.Player2 = new ICard[] { cards[0] };
             player2Done = true;
         };
         // đợi người chơi chọn xong
@@ -135,7 +137,7 @@ public class MatchControl : UnityEngine.MonoBehaviour
         bool player2Done = false;
         var fPlayer = player1First ? Player1 : Player2;
         var sPlayer = player1First ? Player2 : Player1;
-        fPlayer.SelectCard(3);
+        fPlayer.ChonBai(3);
         fPlayer.OnCardSelected += (cards) =>
         {
             if (player1First)
@@ -143,7 +145,7 @@ public class MatchControl : UnityEngine.MonoBehaviour
             else
                 phaseData.Player2 = cards;
             player1Done = true;
-            sPlayer.SelectCard(3);
+            sPlayer.ChonBai(3);
             fPlayer.OnCardSelected += (cards) =>
             {
                 if (player1First)
@@ -168,8 +170,8 @@ public class MatchControl : UnityEngine.MonoBehaviour
     public IEnumerator SuDungTheBoTro()
     {
         yield return _waitSwitchPhase; 
-        Player1.UseSupportCard();
-        Player2.UseSupportCard();
+        Player1.DungBaiHoTro();
+        Player2.DungBaiHoTro();
         bool player1Done = false;
         bool player2Done = false;
         UseSupportCard = new();
@@ -194,13 +196,11 @@ public class MatchControl : UnityEngine.MonoBehaviour
         }
     }
 
-    public int Phase { get; private set; }
-    public MatchPoint _MatchPoint { get; private set; }
     public IEnumerator MoBai()
     {
         yield return _waitSwitchPhase;
-        string[] useSPCard1 = SupportCards.Player1.Concat(UseSupportCard.Player1).ToArray();
-        string[] useSPCard2 = SupportCards.Player2.Concat(UseSupportCard.Player2).ToArray();
+        ISupportCard[] useSPCard1 = SupportCards.Player1.Concat(UseSupportCard.Player1).ToArray();
+        ISupportCard[] useSPCard2 = SupportCards.Player2.Concat(UseSupportCard.Player2).ToArray();
         int point1 = CardHelper.GetCardValue(phaseData.Player1, useSPCard1);
         int point2 = CardHelper.GetCardValue(phaseData.Player2, useSPCard2);
         _MatchPoint.player1 += point1 >= point2 ? 1 : 0;
@@ -216,16 +216,78 @@ public class MatchControl : UnityEngine.MonoBehaviour
         }
     }
 
+    public IEnumerator KetThuc()
+    {
+        yield return _waitSwitchPhase;
+        Player1.KetThuc(_MatchPoint.GetKQPlayer1());
+        Player2.KetThuc(_MatchPoint.GetKQPlayer2());
+    }
+
+    private void Update()
+    {
+        if(lastPhase != _MatchPhase)
+        {
+            lastPhase = _MatchPhase;
+            switch (_MatchPhase)
+            {
+                case MatchPhase.ChiaBai:
+                    StartCoroutine(this.ChiaBai());
+                    break;
+                case MatchPhase.ChonBaiBoTro:
+                    StartCoroutine(this.ChonBaiBoTro());
+                    break;
+                case MatchPhase.ChonBaiChinh:
+                    StartCoroutine(this.ChonBaiChinh());
+                    break;
+                case MatchPhase.KetThuc:
+                    StartCoroutine(this.KetThuc());
+                    break;
+                case MatchPhase.KhoiTao:
+                    StartCoroutine(this.Khoitao());
+                    break;
+                case MatchPhase.MoBai:
+                    StartCoroutine(this.MoBai());
+                    break;
+                case MatchPhase.PhuDau:
+                    StartCoroutine(this.PhuDau());
+                    break;
+                case MatchPhase.SuDungTheBoTro:
+                    StartCoroutine(this.SuDungTheBoTro());
+                    break;
+            }
+        }
+        
+    }
+
     public class SelectedCardData
     {
-        public string[] Player1;
-        public string[] Player2;
+        public ICard[] Player1;
+        public ICard[] Player2;
+    }
+    public class SelectedSPCardData
+    {
+        public ISupportCard[] Player1;
+        public ISupportCard[] Player2;
     }
 
     public class MatchPoint
     {
         public int player1;
         public int player2;
-    }
 
+        public enum KetQua
+        {
+            Thang, Hoa, Thua
+        }
+
+        public KetQua GetKQPlayer1()
+        {
+            return player1 > player2 ? KetQua.Thang : player1 == player2 ? KetQua.Hoa : KetQua.Thua;
+        }
+
+        public KetQua GetKQPlayer2()
+        {
+            return player2 > player1 ? KetQua.Thang : player1 == player2 ? KetQua.Hoa : KetQua.Thua;
+        }
+    }
 }
