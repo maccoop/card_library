@@ -1,7 +1,8 @@
-using UnityEngine;
-
-public class MatchSetting
+namespace thirdparty.card_library.data.Match
 {
-    public static float SecondSwitchPhase = 1;
-    public static float SecondWaitPlayerSelected = 1;
+    public class MatchSetting
+    {
+        public static float SecondSwitchPhase = 1;
+        public static float SecondWaitPlayerSelected = 1;
+    }
 }

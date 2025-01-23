@@ -8,4 +8,9 @@ public class CardSetImplement : ICardSet
     {
         throw new System.NotImplementedException();
     }
+
+    public ICardSet.Set GetSetType(ICard[] cards)
+    {
+        throw new System.NotImplementedException();
+    }
 }

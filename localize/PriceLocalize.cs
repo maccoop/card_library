@@ -34,7 +34,7 @@ public class PriceLocalizeService : MonoBehaviour, IEService
         }
     }
 
-    internal int GetPrice(string name)
+    public int GetPrice(string name)
     {
         return prices[name];
     }

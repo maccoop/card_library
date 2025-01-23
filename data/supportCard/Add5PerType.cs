@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using thirdparty.card_library.data.Card;
+using UnityEngine;
 
 [System.Serializable]
 public class Add5H : SupportCard

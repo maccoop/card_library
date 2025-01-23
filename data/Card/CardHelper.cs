@@ -1,3 +1,4 @@
+using thirdparty.card_library.data.Card;
 using UnityEngine;
 
 public static class CardHelper

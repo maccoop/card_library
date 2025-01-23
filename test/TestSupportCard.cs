@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using thirdparty.card_library.data.Card;
 using UnityEngine;
 
 public class TestSupportCard : MonoBehaviour

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using thirdparty.card_library.data.Card;
+using UnityEngine;
 
 
 public class Multi4H : SupportCard
