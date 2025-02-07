@@ -48,6 +48,7 @@ namespace thirdparty.card_library.data.Match
             float DoAnimationPrefab(float time, RectTransform prefab, RectTransform target)
             {
                 prefab.gameObject.SetActive(true);
+                prefab.GetComponent<CanvasGroup>().alpha = 1;
                 target.gameObject.SetActive(true);
                 target.GetComponent<CanvasGroup>().alpha = 0;
                 prefab.transform.DORotate(target.rotation.eulerAngles, DURATION).SetEase(curve).SetDelay(time);

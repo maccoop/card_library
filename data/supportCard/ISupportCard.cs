@@ -1,5 +1,5 @@
 using UnityEngine;
-using Assets.SimpleLocalization.Scripts;
+//using Assets.SimpleLocalization.Scripts;
 
 public interface ISupportCard
 {
@@ -19,7 +19,7 @@ public abstract class SupportCard : ISupportCard
         {
             if (_price == 0)
             {
-                _price = ServiceLocator.Instance.GetService<PriceLocalizeService>().GetPrice(Name);
+                _price = 0;//ServiceLocator.Instance.GetService<PriceLocalizeService>().GetPrice(Name);
             }
             return _price;
         }
@@ -41,7 +41,7 @@ public abstract class SupportCard : ISupportCard
         {
             if (_description != null)
             {
-                LocalizationManager.Localize(Name);
+                //LocalizationManager.Localize(Name);
             }
             return _description;
         }
