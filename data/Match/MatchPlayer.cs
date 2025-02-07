@@ -8,7 +8,7 @@ namespace thirdparty.card_library.data.Match
 {
     public class MatchPlayer : MonoBehaviour, IMatchPlayer
     {
-        private UserData _userData;
+        private UserDataSingle _userData;
         private IMatchPlayer.CardSelected _onCardSelected;
         private IMatchPlayer.SupportCardSelected _onSupportCardUsed;
         private IMatchPlayer.SupportCardSelected _onSupportCardSelected;
@@ -22,7 +22,7 @@ namespace thirdparty.card_library.data.Match
         {
             if (UserData == null)
             {
-                UserData = new UserData();
+                UserData = new UserDataSingle();
                 UserData.Init();
             }
             CardOnTable = new List<ICard>();
@@ -150,7 +150,7 @@ namespace thirdparty.card_library.data.Match
         public IMatchPlayer.CardSelected OnCardSelected { get => _onCardSelected; set => _onCardSelected = value; }
         public IMatchPlayer.SupportCardSelected OnSupportCardUsed { get => _onSupportCardUsed; set => _onSupportCardUsed = value; }
         public IMatchPlayer.SupportCardSelected OnSupportCardSelected { get => _onSupportCardSelected; set => _onSupportCardSelected = value; }
-        public UserData UserData { get => _userData; private set => _userData = value; }
+        public UserDataSingle UserData { get => _userData; private set => _userData = value; }
         public List<ICard> CardOnTable { get => _cardOnTable; private set => _cardOnTable = value; }
         public List<ICard> CardOnHand { get => _cardOnHand; private set => _cardOnHand = value; }
     }

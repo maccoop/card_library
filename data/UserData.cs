@@ -3,7 +3,7 @@ using thirdparty.card_library.data.Card;
 using UnityEngine;
 
 [System.Serializable]
-public class UserData
+public class UserDataSingle
 {
     const string KEY_SAVE = "userdata";
     const string CARD_FRAME_DEF = "def";
@@ -24,7 +24,7 @@ public class UserData
 
     public void Save()
     {
-        PlayerPrefs.SetString("", JsonUtility.ToJson(this));
+        PlayerPrefs.SetString(KEY_SAVE, JsonUtility.ToJson(this));
         PlayerPrefs.Save();
     }
 }

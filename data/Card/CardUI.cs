@@ -12,7 +12,7 @@ namespace thirdparty.card_library.data.Card
         public TMP_Text title, description;
         public TMP_Text point1, point2;
     
-        public UserData userData;
+        public UserDataSingle userData;
 
         private void Start()
         {
