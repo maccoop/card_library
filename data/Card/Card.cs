@@ -69,7 +69,8 @@ namespace thirdparty.card_library.data.Card
         public Sprite GetIcon(string skin = "def")
         {
             key = $"card/{skin}/{Value}{Type}";
-            return ServiceLocator.Instance.GetService<SpriteManagerService>().GetSprite(key);
+            //return ServiceLocator.Instance.GetService<SpriteManagerService>().GetSprite(key);
+            return null;
         }
     }
 }

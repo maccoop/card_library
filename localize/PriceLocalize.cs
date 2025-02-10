@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Assets.SimpleLocalization.Scripts;
+//using Assets.SimpleLocalization.Scripts;
 using System;
 
 public class PriceLocalizeService : MonoBehaviour, IEService
@@ -17,7 +17,7 @@ public class PriceLocalizeService : MonoBehaviour, IEService
     private void Start()
     {
         prices = new();
-        List<string> list = LocalizationManager.GetLines(asset.text);
+        List<string> list = null;// LocalizationManager.GetLines(asset.text);
         string[] item;
 
         foreach (var e in list)
