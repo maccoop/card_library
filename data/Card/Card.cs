@@ -66,7 +66,6 @@ namespace thirdparty.card_library.data.Card
             result.Init();
             return result;
         }
-
         public Sprite GetIcon(string skin = "def")
         {
             key = $"card/{skin}/{Value}{Type}";

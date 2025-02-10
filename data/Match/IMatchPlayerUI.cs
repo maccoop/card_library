@@ -3,14 +3,16 @@ using System.Collections.Generic;
 
 namespace thirdparty.card_library.data.Match
 {
+    public delegate void OnSelected(object[] selected);
     public interface IMatchPlayerUI
     {
-        IEnumerator XaoBai();
-        IEnumerator ChiaBai();
-        IEnumerator KhoiTao();
-        IEnumerator<string[]> ChonBaiHoTro();
-        IEnumerator<int[]> ChonBai(List<ICard> cardOnHand, int amountCardRequire);
-        IEnumerator<int[]> DungBaiHoTro();
-        IEnumerator KetThuc(MatchControl.MatchPoint.KetQua ketQua);
+        
+        void XaoBai();
+        void ChiaBai();
+        void KhoiTao();
+        void ChonBaiHoTro(OnSelected onSelected);
+        void ChonBai(int amountCardRequire, OnSelected onSelected);
+        void DungBaiHoTro(OnSelected onSelected);
+        void KetThuc(MatchControl.MatchPoint.KetQua ketQua);
     }
 }

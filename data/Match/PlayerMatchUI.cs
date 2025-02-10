@@ -19,46 +19,62 @@ namespace thirdparty.card_library.data.Match
             return phases[index];
         }
 
-        public IEnumerator XaoBai()
+        public void XaoBai()
         {
             GetPhases(0).DoAnimation();
-            yield break;
         }
 
-        public IEnumerator ChiaBai()
+        public void ChiaBai()
         {
             GetPhases(1).DoAnimation();
-            yield break;
         }
 
-        public IEnumerator KhoiTao()
+        public void KhoiTao()
         {
             GetPhases(2).DoAnimation();
-            yield break;
         }
 
-        public IEnumerator<string[]> ChonBaiHoTro()
+        public void ChonBaiHoTro(OnSelected onSelected)
         {
-            GetPhases(3).DoAnimation();
-            yield return GetPhases(3).SelectCards().Cast<string>().ToArray();
+            using (var phase = GetPhases(3))
+            {
+                phase.DoAnimation();
+                phase.OnEnd += () =>
+                {
+                    onSelected.Invoke(phase.SelectCards().Cast<string>().ToArray());
+                };
+            }
         }
 
-        public IEnumerator<int[]> ChonBai(List<ICard> cardOnHand, int amountCardRequire)
+        public void ChonBai(int amountCardRequire, OnSelected onSelected)
         {
-            GetPhases(4).DoAnimation();
-            yield return GetPhases(4).SelectCards().Cast<int>().ToArray();
+            using (var phase = GetPhases(4) as MatchPhase4)
+            {
+                phase.DoAnimation();
+                phase.MaxValue = amountCardRequire;
+                phase.OnEnd += () =>
+                {
+                    onSelected.Invoke(phase.SelectCards().Cast<string>().ToArray());
+                };
+            }
         }
 
-        public IEnumerator<int[]> DungBaiHoTro()
+        public void DungBaiHoTro(OnSelected onSelected)
         {
-            GetPhases(5).DoAnimation();
-            yield return GetPhases(5).SelectCards().Cast<int>().ToArray();
+
+            using (var phase = GetPhases(5))
+            {
+                phase.DoAnimation();
+                phase.OnEnd += () =>
+                {
+                    onSelected.Invoke(phase.SelectCards().Cast<string>().ToArray());
+                };
+            }
         }
 
-        public IEnumerator KetThuc(MatchControl.MatchPoint.KetQua ketQua)
+        public void KetThuc(MatchControl.MatchPoint.KetQua ketQua)
         {
             GetPhases(6).DoAnimation();
-            yield break;
         }
     }
 }

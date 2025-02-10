@@ -1,4 +1,4 @@
-
+using System.Collections.Generic;
 
 namespace thirdparty.card_library.data.Match
 {
@@ -9,6 +9,8 @@ namespace thirdparty.card_library.data.Match
         CardSelected OnCardSelected { get; set; }
         SupportCardSelected OnSupportCardUsed { get; set; }
         SupportCardSelected OnSupportCardSelected { get; set; }
+        public List<ICard> CardOnTable { get;}
+        public List<ICard> CardOnHand { get ; }
         void KhoiTao();
         void XaoBai();
         void ChiaBai();

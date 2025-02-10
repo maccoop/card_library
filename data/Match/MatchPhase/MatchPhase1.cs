@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -57,7 +58,7 @@ namespace thirdparty.card_library.data.Match
                     prefab.gameObject.SetActive(false);
                     prefab.transform.position = basePosition;
                     prefab.transform.eulerAngles = baseRotation;
-                    if (i == prefabs.Length - 1) this.OnAnimationEnd();
+                    if (i == prefabs.Length - 1) this.OnEnd();
                 }).OnStart(() =>
                 {
                     prefabs[i].gameObject.SetActive(true);

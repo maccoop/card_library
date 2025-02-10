@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using Random = System.Random;
@@ -30,7 +29,7 @@ namespace thirdparty.card_library.data.Match
             {
                 CardOnTable.Add(Card.Card.GetCard($"{e.Item1},{e.Item2}"));
             }
-            StartCoroutine(ui.KhoiTao());
+            ui.KhoiTao();
         }
 
         public void XaoBai()
@@ -47,60 +46,34 @@ namespace thirdparty.card_library.data.Match
                     (list[i], list[j]) = (list[j], list[i]); // Hoán đổi vị trí
                 }
             }
-            StartCoroutine(ui.XaoBai());
+            ui.XaoBai();
         }
 
         public void ChiaBai()
         {
             CardOnHand = CardOnTable.GetRange(0, 9);
-            StartCoroutine(ui.ChiaBai());
+            ui.ChiaBai();
         }
 
         public void ChonBaiHoTro()
         {
-            StartCoroutine(CoChonBaiHoTro());
-            return;
-            IEnumerator CoChonBaiHoTro()
+            ui.ChonBaiHoTro(OnEnd);
+
+            void OnEnd(object[] selected)
             {
-                var coroutine = ui.ChonBaiHoTro();
-                string[] finalResult = null;
-                while (coroutine.MoveNext())
-                {
-                    if (coroutine.Current is string[] result)
-                    {
-                        finalResult = result;
-                        break;
-                    }
-                    yield return null;
-                }
                 _cardSupportOnTable = new();
-                foreach(var spcard in finalResult)
+                foreach (var spcard in selected)
                 {
-                    _cardSupportOnTable.Add(SupportCardHelper.GetSupportCard(spcard));
+                    _cardSupportOnTable.Add(SupportCardHelper.GetSupportCard(spcard as string));
                 }
             }
         }
 
         public void ChonBai(int amountCardRequire)
         {
-            StartCoroutine(CoChonBai());
-            return;
-
-            IEnumerator CoChonBai()
+            ui.ChonBai(amountCardRequire, OnComplete);
+            void OnComplete(object[] objects)
             {
-                var coroutine = ui.ChonBai(CardOnHand, amountCardRequire);
-                int[] finalResult = null;
-
-                while (coroutine.MoveNext())
-                {
-                    if (coroutine.Current is int[] result)
-                    {
-                        finalResult = result;
-                        break;
-                    }
-                    yield return null;
-                }
-
                 ICard[] cardSelected = new ICard[amountCardRequire];
                 for (int i = 0; i < amountCardRequire; i++)
                 {
@@ -113,28 +86,16 @@ namespace thirdparty.card_library.data.Match
 
         public void DungBaiHoTro()
         {
-            StartCoroutine(CoDungBaiHoTro());
-            return;
+            ui.DungBaiHoTro(OnEnd);
 
-            IEnumerator CoDungBaiHoTro()
+            void OnEnd(object[] finalResult)
             {
-                var coroutine = ui.DungBaiHoTro();
-                int[] finalResult = null;
-
-                while (coroutine.MoveNext())
-                {
-                    if (coroutine.Current is int[] result)
-                    {
-                        finalResult = result;
-                        break;
-                    }
-                    yield return null;
-                }
-
                 _cardSupportSelected = new ISupportCard[finalResult.Length];
+                int index = 0;
                 for (int i = 0; i < finalResult.Length; i++)
                 {
-                    _cardSupportSelected[i] = _cardSupportOnTable[finalResult[i]];
+                    index = int.Parse(finalResult[i].ToString());
+                    _cardSupportSelected[i] = _cardSupportOnTable[index];
                 }
                 _cardSupportOnTable.RemoveAll(card => _cardSupportSelected.Contains(card));
                 _onSupportCardSelected.Invoke(_cardSupportSelected);
@@ -144,7 +105,7 @@ namespace thirdparty.card_library.data.Match
 
         public void KetThuc(MatchControl.MatchPoint.KetQua ketQua)
         {
-            StartCoroutine(ui.KetThuc(ketQua));
+            ui.KetThuc(ketQua);
         }
 
         public IMatchPlayer.CardSelected OnCardSelected { get => _onCardSelected; set => _onCardSelected = value; }

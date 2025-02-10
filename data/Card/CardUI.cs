@@ -14,14 +14,12 @@ namespace thirdparty.card_library.data.Card
     
         public UserDataSingle userData;
 
-        private void Start()
-        {
-            icon.sprite = data.GetIcon();
-        }
-
-        public void Init(global::thirdparty.card_library.data.Card.Card data)
+        public void Init(ICard data)
         {
             this.background.sprite = data.GetIcon();
+            this.icon.sprite = data.GetIcon();
+            this.title.text = data.Value.ToString().ToUpper();
+            this.description.text = data.Type;
         }
     }
 }
