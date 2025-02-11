@@ -19,11 +19,7 @@ namespace thirdparty.card_library.data.Match
 
         public void KhoiTao()
         {
-            if (UserData == null)
-            {
-                UserData = new UserDataSingle();
-                UserData.Init();
-            }
+            //UserData = ServiceLocator.Instance.GetService<UserDataSingle>();
             CardOnTable = new List<ICard>();
             foreach (var e in UserData.cards)
             {

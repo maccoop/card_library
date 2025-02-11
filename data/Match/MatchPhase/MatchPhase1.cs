@@ -9,7 +9,7 @@ namespace thirdparty.card_library.data.Match
     public class MatchPhase1 : IMatchUI
     {
         public int amount = 5;
-        private const float DURATION = 0.5f;
+        private const float DURATION = 0.2f;
         public RectTransform[] Targets;
         public RectTransform[] prefabs;
         public RectTransform[] BotTargets;

@@ -9,9 +9,10 @@ namespace thirdparty.card_library.data.Match
 {
     public class MatchPhase0 : IMatchUI
     {
-        const float DURATION = 0.2f;
-        const float DELAY = 0.1f;
-        const int NUMBER = 52;
+        public float TIME = 0.7f;
+        public float DURATION = 0.1f;
+        public float DELAY = 0.05f;
+        int NUMBER => Mathf.CeilToInt(TIME / DELAY);
 
         public List<RectTransform> prefabs;
         public bool[] actives;
@@ -38,7 +39,7 @@ namespace thirdparty.card_library.data.Match
             {
                 RectTransform prefab = null;
                 int index = 0;
-                for (i = 1; i< prefabs.Count; i++)
+                for (i = 1; i < prefabs.Count; i++)
                 {
                     if (!actives[i])
                     {
@@ -47,7 +48,7 @@ namespace thirdparty.card_library.data.Match
                         break;
                     }
                 }
-                if(prefab == null)
+                if (prefab == null)
                 {
                     prefabs.Add(Instantiate<RectTransform>(prefabs[0], prefabs[0].parent));
                     prefab = prefabs[prefabs.Count - 1];
@@ -55,11 +56,13 @@ namespace thirdparty.card_library.data.Match
                 }
                 prefab.gameObject.SetActive(true);
                 prefab.transform.position = position;
+                prefab.SetAsLastSibling();
                 prefab.GetComponent<CanvasGroup>().alpha = 1;
                 actives[index] = true;
                 prefab.DOMove(target.position, DURATION).SetEase(ease).OnComplete(() =>
                 {
                     prefab.gameObject.SetActive(false);
+                    target.gameObject.SetActive(true);
                     actives[index] = false;
                     target.GetComponent<CanvasGroup>().alpha = 1;
                 });
@@ -71,7 +74,7 @@ namespace thirdparty.card_library.data.Match
                 yield return wait;
             }
             yield return new WaitForSeconds(DURATION);
-            foreach(var e in prefabs)
+            foreach (var e in prefabs)
             {
                 e.position = target.position;
             }

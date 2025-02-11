@@ -1,21 +1,27 @@
-using System;
+﻿using System;
 using System.Collections;
 using thirdparty.card_library.data.Card;
 using DG.Tweening;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections.Generic;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using TMPro;
 
 namespace thirdparty.card_library.data.Match
 {
-    public class MatchPhase3 : IMatchUI
+    /// <summary>
+    /// chọn bài hỗ trợ
+    /// </summary>
+    public class MatchPhase5 : IMatchUI
     {
         const float DURATION = 0.2F;
         public RectTransform _base;
         public Transform content;
-        public Phase3Item prefab;
+        public Phase5Item prefab;
         public Vector2 targetPos;
 
-        private List<Phase3Item> items = new();
+        private List<Phase5Item> items = new();
         private Vector2 basePos;
         private bool enable = false;
         UserDataSingle userdata;
