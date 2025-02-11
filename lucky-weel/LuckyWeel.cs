@@ -71,6 +71,21 @@ public class LuckyWeel : MonoBehaviour
     }
 
     [Button]
+    public void MoveToZero()
+    {
+        float angle = 0;
+        var rotation = _content.transform.rotation;
+        var crrAngle = rotation.eulerAngles.z;
+        if (crrAngle > 0)
+            angle = 360 - crrAngle;
+        else
+            angle = Mathf.Abs(crrAngle);
+        crrAngle += angle;
+        rotation.eulerAngles = crrAngle * Vector3.forward;
+        _content.transform.rotation = rotation;
+    }
+
+    [Button]
     public void StartSpinning(int index = -1)
     {
         if (index < 0 || index >= _itemCount)
@@ -79,15 +94,17 @@ public class LuckyWeel : MonoBehaviour
         }
         Debug.Log("Index Result: " + index);
         float angle = ROUND_MIN * 360;
+        // move to zero
+        var rotation = _content.transform.rotation;
+        var crrAngle = rotation.eulerAngles.z;
+        if (crrAngle > 0)
+            angle += 360 - crrAngle;
+        else
+            angle += Mathf.Abs(crrAngle);
+        //end move to 0
         float angleAddFrom = Mathf.Abs(_position[index].Item1);
         float angleAddTo = Mathf.Abs(_position[index].Item2);
         angle += Random.Range(angleAddFrom, angleAddTo);
-        // move to zero
-        var crrAngle = _content.transform.rotation.eulerAngles.z;
-        if (crrAngle < 0)
-            angle += 360 - crrAngle;
-        else
-            angle -= crrAngle;
         Debug.Log("Angle to from: " + angleAddFrom);
         Debug.Log("Angle to to: " + angleAddTo);
         Debug.Log("Crr Angle: " + crrAngle);
