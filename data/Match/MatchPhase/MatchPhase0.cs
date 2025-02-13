@@ -19,18 +19,19 @@ namespace thirdparty.card_library.data.Match
         public RectTransform target;
         public Ease ease;
         private Vector3 position;
+        int i = 0;
 
         private void Start()
         {
             position = prefabs[0].position;
-            actives = new bool[52];
+            actives = new bool[NUMBER];
         }
 
         public override void DoAnimation()
         {
             StartCoroutine(CoAnimation());
         }
-        int i = 0;
+
         private IEnumerator CoAnimation()
         {
             int count = 0;

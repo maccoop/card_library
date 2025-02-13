@@ -8,4 +8,5 @@ public interface ICard
     string Type { get; }
     MatchPoint GetAddition();
     Sprite GetIcon(string skin = "def");
+
 }
