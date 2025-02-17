@@ -12295,18 +12295,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7612264359994997462}
     m_Modifications:
-    - target: {fileID: 2719235751186050575, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
-      propertyPath: m_Type
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2719235751186050575, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 2720535173406242035, guid: 99973863d03745d44835b9edbc5ca2e3, type: 3}
-    - target: {fileID: 2719235751186050575, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
-      propertyPath: m_Color.a
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4193561381904976496, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -12386,34 +12374,6 @@ PrefabInstance:
     - target: {fileID: 4193561381904976496, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4378743187104481149, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4378743187104481149, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4378743187104481149, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
-      propertyPath: m_AnchorMin.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4378743187104481149, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4378743187104481149, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 21.991
-      objectReference: {fileID: 0}
-    - target: {fileID: 4378743187104481149, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 27.4888
-      objectReference: {fileID: 0}
-    - target: {fileID: 6247057647501607081, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
-      propertyPath: m_Name
-      value: image
       objectReference: {fileID: 0}
     - target: {fileID: 8289002847530557485, guid: b1f637f04b71a374ab86a019ede50039, type: 3}
       propertyPath: m_Name
